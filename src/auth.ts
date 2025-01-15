@@ -3,6 +3,7 @@ import { existingUserById } from "./actions/existing-user-id";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "./lib/prisma";
 import authConfig from "./auth.config";
+import { UserRole } from "@prisma/client";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
@@ -22,6 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
       const existingUser = await existingUserById(token.sub);
       if (!existingUser) return token;
+      token.role = existingUser.role;
       if (user?.customExpiration) {
         token.expiration = user.customExpiration;
       }
@@ -32,7 +34,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         session.user.id = token.sub;
       }
 
-      if (session.user) {
+      if (token.role && session.user) {
+        session.user.role = token.role as UserRole;
         session.user.customExpiration = token?.expiration as number;
       }
       return session;

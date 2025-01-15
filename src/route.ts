@@ -6,3 +6,7 @@ export const authRoutes = [
   "/confirm-reset-password",
   "/confirm-email",
 ];
+
+export const privateRoutes = ["/invoices", "/invoices/:id"];
+
+export const adminRoutes = ["/dashboard"];

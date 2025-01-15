@@ -16,6 +16,7 @@ export const sendMail = async (email: string, token: string) => {
       from: "Travel Experts",
       to: email,
       subject: "Email Confirmation",
+
       html: `
     <h1>Thank you for registering with Bookings</h1>
     <p>Your personal code is: <strong>${token}</strong></p>

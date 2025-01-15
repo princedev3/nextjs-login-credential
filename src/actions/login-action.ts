@@ -6,6 +6,7 @@ import { existingUserByEmail } from "./existing-user-by-email";
 import { generateVerificationToken } from "./generateVerificationToken";
 import { sendMail } from "./mail";
 import { signIn } from "@/auth";
+import { AuthError } from "next-auth";
 
 export const loginAction = async (values: z.infer<typeof formLoginSchema>) => {
   try {
@@ -36,9 +37,16 @@ export const loginAction = async (values: z.infer<typeof formLoginSchema>) => {
       password,
       redirect: false,
     });
-    return { success: "Logged in Successfully !" };
+    return { success: "Logged in Successfully!" };
   } catch (error) {
-    console.log(error);
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin":
+          return { error: "Invalid credentials" };
+        default:
+          return { error: "something went wrong" };
+      }
+    }
     return { error: "Invalid credentials" };
   }
 };

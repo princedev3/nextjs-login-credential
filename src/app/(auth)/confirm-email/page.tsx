@@ -13,7 +13,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import { tokenSchema } from "@/utils/auth-schema";
 import { useTransition } from "react";
 import { verifyEmail } from "@/actions/verifymail";

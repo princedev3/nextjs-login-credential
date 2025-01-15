@@ -22,8 +22,12 @@ model User {
   isTwoFactorEnabled    Boolean                @default(false)
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
+  role                  UserRole               @default(USER)
 }
-
+enum UserRole {
+  ADMIN
+  USER
+}
 
 
 model VerificationToken {
@@ -53,3 +57,27 @@ model TwoFactorToken {
   @@unique([email, token])
 }
 
+model Ticket{
+  id String @id @default(uuid())
+  title String
+  desc String
+  status TicketStatus
+  email String
+  createdAt DateTime @default(now())
+  name String
+  value Float
+  createdby String
+  paid TicketPaid @default(NOT_PAID)
+  intent_id String? @unique
+  @@index([intent_id])
+}
+enum TicketPaid{
+  NOT_PAID
+  PAID
+}
+enum TicketStatus{
+open
+closed
+paid
+pending
+} 
